@@ -31,6 +31,7 @@ jobs:
         run: |
           mkdir build
           for f in $(find src/ -type f -name "*.py"); do mpy-cross -o build/$(basename $f .py).mpy $f; done
+          ls -l build
 
       - name: Get commit SHA
         id: get-commit-sha
