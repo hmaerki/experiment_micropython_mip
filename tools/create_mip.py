@@ -85,14 +85,14 @@ class IndexHtml:
     def __init__(self):
         self.html = io.StringIO()
         self.html.write("<h1>Micropython MIP index.</h1>\n")
-        self.html.write("<h1>Installation</h2>\n")
+        self.html.write("<h2>Installation</h2>\n")
         self.html.write("""<pre>import mip
 mip.install("{PACKAGE_NAME}", version="main", index="https://hmaerki.github.io/experiment_micropython_mip")\n
 """)
 
     def package(self, filename_json: pathlib.Path) -> None:
         link = filename_json.relative_to(DIRECTORY_MIP)
-        self.html.write(f'<p><a href="{link}">{link}</a></p>\n')
+        self.html.write(f'<h2><a href="{link}">{link}</a></h2>\n')
         self.html.write(f"<pre>{filename_json.read_text()}</pre>\n")
 
     def write(self)-> None:
