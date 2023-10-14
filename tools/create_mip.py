@@ -126,7 +126,7 @@ def main():
             target_path_mpy = target_path[:-2] + "mpy"
             package_json["hashes"].append((target_path_mpy, short_mpy_hash))
 
-        with (DIRECTORY_PACKAGE / "latest.json").open("w") as f:
+        with (DIRECTORY_PACKAGE.parent / "latest.json").open("w") as f:
             json.dump(package_json, f ,indent=4, sort_keys=True)
 
 
