@@ -21,8 +21,8 @@ DIRECTORY_PACKAGES = DIRECTORY_REPO / "docs" / "package"
 MYPY_VERSION = 6
 PACKAGE_NAME = "dryer2023"
 
-DIRECTORY_PACKAGE = DIRECTORY_PACKAGES / str(MYPY_VERSION) / PACKAGE_NAME 
-DIRECTORY_PACKAGE.mkdir(parents=True, exist_ok=True)
+DIRECTORY_PACKAGE = DIRECTORY_PACKAGES / str(MYPY_VERSION) / PACKAGE_NAME
+DIRECTORY_FILE = DIRECTORY_REPO / "docs" / "file"
 
 BRANCH = "main"
 HASH_PREFIX_LEN = 12
@@ -41,7 +41,7 @@ def _write_hashed_file(
     mpy_code: bytes,
     py_code: str,
     filename_py: str,
-    directory_package: pathlib.Path,
+    directory_file: pathlib.Path,
     hash_prefix_len: int,
 ):
     # Generate the full sha256 and the hash prefix to use as the output path.
@@ -49,7 +49,7 @@ def _write_hashed_file(
     short_file_hash = file_hash[:hash_prefix_len]
     # Group files into subdirectories using the first two bytes of the hash prefix.
     output_file = os.path.join(short_file_hash[:2], short_file_hash)
-    output_file_path = directory_package / output_file
+    output_file_path = directory_file / output_file
 
     # Hack: Just ignore hash conflicts
     output_file_path.unlink(missing_ok=True)
@@ -91,7 +91,10 @@ def main():
         "version": "0.1",
     }
 
-    shutil.rmtree(DIRECTORY_PACKAGE)
+    shutil.rmtree(DIRECTORY_PACKAGE, ignore_errors=True)
+    DIRECTORY_PACKAGE.mkdir(parents=True, exist_ok=True)
+    shutil.rmtree(DIRECTORY_FILE, ignore_errors=True)
+    DIRECTORY_FILE.mkdir(parents=True, exist_ok=True)
 
     for filename_py in (DIRECTORY_SRC / PACKAGE_NAME).glob("*.py"):
         with tempfile.NamedTemporaryFile(
@@ -99,7 +102,8 @@ def main():
         ) as mpy_tempfile:
             proc = subprocess.run(
                 [
-                    "python", "-m",
+                    "python",
+                    "-m",
                     "mpy_cross",
                     "-o",
                     mpy_tempfile.name,
@@ -119,7 +123,7 @@ def main():
                 mpy_tempfile.read(),
                 filename_py.read_text(),
                 filename_py=filename_py,
-                directory_package=DIRECTORY_PACKAGE,
+                directory_file=DIRECTORY_FILE,
                 hash_prefix_len=HASH_PREFIX_LEN,
             )
 
@@ -128,7 +132,7 @@ def main():
             package_json["hashes"].append((filename_mpy.name, short_mpy_hash))
 
         with (DIRECTORY_PACKAGE / f"{BRANCH}.json").open("w") as f:
-            json.dump(package_json, f ,indent=4, sort_keys=True)
+            json.dump(package_json, f, indent=4, sort_keys=True)
 
 
 if __name__ == "__main__":
