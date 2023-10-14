@@ -41,6 +41,7 @@ jobs:
           ls -l ..
           echo "<h1>Hallo<h1>" >> index.html
           echo "<h1>Velo<h1>" >> docs/index.html
+          python -m tools.create_mip
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2

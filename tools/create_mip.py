@@ -21,11 +21,11 @@ DIRECTORY_PACKAGES = DIRECTORY_REPO / "docs" / "package"
 MYPY_VERSION = 6
 PACKAGE_NAME = "dryer2023"
 
-DIRECTORY_PACKAGE = DIRECTORY_PACKAGES / PACKAGE_NAME
+DIRECTORY_PACKAGE = DIRECTORY_PACKAGES / PACKAGE_NAME / str(MYPY_VERSION)
 DIRECTORY_PACKAGE.mkdir(parents=True, exist_ok=True)
 
 BRANCH = "main"
-hash_prefix_len = 8
+HASH_PREFIX_LEN = 12
 
 
 # Returns the sha256 of the specified file object.
@@ -118,7 +118,7 @@ def main():
                 filename_py.read_text(),
                 target_path=target_path,
                 out_file_dir=DIRECTORY_PACKAGE,
-                hash_prefix_len=hash_prefix_len,
+                hash_prefix_len=HASH_PREFIX_LEN,
             )
 
             # Add the file to the package json.
