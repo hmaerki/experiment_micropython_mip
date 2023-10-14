@@ -1,6 +1,7 @@
 """
 https://github.com/micropython/micropython-lib/blob/master/tools/build.py
 """
+import io
 import json
 import os
 import shutil
@@ -80,6 +81,22 @@ def _write_hashed_file(
 
     return short_file_hash
 
+class IndexHtml:
+    def __init__(self):
+        self.html = io.StringIO()
+        self.html.write("<h1>Micropython MIP index.</h1>\n")
+        self.html.write("<h1>Installation</h2>\n")
+        self.html.write("""<pre>import mip
+mip.install("{PACKAGE_NAME}", version="main", index="https://hmaerki.github.io/experiment_micropython_mip")\n
+""")
+
+    def package(self, filename_json: pathlib.Path) -> None:
+        link = str({filename_json.relative_to(DIRECTORY_MIP)})
+        self.html.write(f'<p><a href="{link}">{link}</a></p>\n')
+        self.html.write(f"<pre>{filename_json.read_text()}</pre>\n")
+    
+    def write(self)-> None:
+        (DIRECTORY_MIP /"index.html").write_text(self.html.getvalue())
 
 def main():
     package_json = {
@@ -133,9 +150,13 @@ def main():
             filename_mpy = filename_py.with_suffix(".mpy")
             package_json["hashes"].append((f"{PACKAGE_NAME}/{filename_mpy.name}", short_mpy_hash))
 
-    with (DIRECTORY_PACKAGE / f"{BRANCH}.json").open("w") as f:
+    filename_json = DIRECTORY_PACKAGE / f"{BRANCH}.json"
+    with filename_json.open("w") as f:
         json.dump(package_json, f, indent=4, sort_keys=True)
 
+    index = IndexHtml()
+    index.package(filename_json=filename_json)
+    index.write()
 
 if __name__ == "__main__":
     main()

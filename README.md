@@ -20,7 +20,7 @@ This repo demonstrates how a application may be installed using MIP:
 
 ```python
 import mip
-mip.install("dryer2023", version="main", index="https://hmaerki.github.io/experiment_micropython_mip/mip")
+mip.install("dryer2023", version="main", index="https://hmaerki.github.io/experiment_micropython_mip")
 ```
 
 The download will be controlled by a 'package.json':
