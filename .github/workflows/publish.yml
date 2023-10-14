@@ -43,7 +43,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           name: "Release main for micropython-1.20.0"
-          tag: "micropython-1.20.0-main"
+          tag: "v1.0"
           commit: ${{ steps.get-commit-sha.outputs.TAG_SHA }}
           artifacts: "build/*.mpy"
           skipIfReleaseExists: true
