@@ -131,8 +131,8 @@ def main():
             filename_mpy = filename_py.with_suffix(".mpy")
             package_json["hashes"].append((f"{PACKAGE_NAME}/{filename_mpy.name}", short_mpy_hash))
 
-        with (DIRECTORY_PACKAGE / f"{BRANCH}.json").open("w") as f:
-            json.dump(package_json, f, indent=4, sort_keys=True)
+    with (DIRECTORY_PACKAGE / f"{BRANCH}.json").open("w") as f:
+        json.dump(package_json, f, indent=4, sort_keys=True)
 
 
 if __name__ == "__main__":
