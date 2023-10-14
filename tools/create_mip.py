@@ -13,9 +13,11 @@ import tempfile
 DIRECTORY_OF_THIS_FILE = pathlib.Path(__file__).parent
 DIRECTORY_REPO = DIRECTORY_OF_THIS_FILE.parent
 
+DIRECTORY_SRC = DIRECTORY_REPO / "src"
+assert DIRECTORY_SRC.is_dir()
+
 DIRECTORY_MIP = DIRECTORY_REPO / "mip"
 assert DIRECTORY_MIP.is_dir()
-
 DIRECTORY_PACKAGES = DIRECTORY_MIP / "package"
 
 MYPY_VERSION = 6
@@ -96,7 +98,7 @@ def main():
     shutil.rmtree(DIRECTORY_FILE, ignore_errors=True)
     DIRECTORY_FILE.mkdir(parents=True, exist_ok=True)
 
-    for filename_py in (DIRECTORY_MIP / PACKAGE_NAME).glob("*.py"):
+    for filename_py in (DIRECTORY_SRC / PACKAGE_NAME).glob("*.py"):
         with tempfile.NamedTemporaryFile(
             mode="rb", suffix=".mpy", delete=True
         ) as mpy_tempfile:
