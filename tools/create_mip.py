@@ -84,8 +84,8 @@ def main():
         "hashes": [],
         "deps": [
             [
-                "umqtt.simple",
-                "latest",
+                "https://micropython.org/pi/v2/package/6/umqtt.simple/latest.json",
+                "dummy",
             ]
         ],
         "version": "0.1",
@@ -129,7 +129,7 @@ def main():
 
             # Add the file to the package json.
             filename_mpy = filename_py.with_suffix(".mpy")
-            package_json["hashes"].append((filename_mpy.name, short_mpy_hash))
+            package_json["hashes"].append((f"{PACKAGE_NAME}/filename_mpy.name", short_mpy_hash))
 
         with (DIRECTORY_PACKAGE / f"{BRANCH}.json").open("w") as f:
             json.dump(package_json, f, indent=4, sort_keys=True)
