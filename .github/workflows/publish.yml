@@ -7,8 +7,6 @@ on:
     inputs:
       mpy_cross_versions:  # A json list of mpy-cross versions to generate releases for
         required: true
-      branch:
-        required: true
 
 jobs:
   publish:
@@ -37,15 +35,14 @@ jobs:
       - name: Get commit SHA
         id: get-commit-sha
         run: |
-          echo "BRANCH=${{ github.event.inputs.branch }}"
-          tag_sha=$(git rev-list -n 1 ${{ github.event.inputs.branch }})
+          tag_sha=$(git rev-list -n 1 main)
           echo "TAG_SHA=$tag_sha" >> "$GITHUB_OUTPUT"
 
       - name: Release
         uses: ncipollo/release-action@v1
         with:
-          name: "Release ${{ matrix.tag }} for micropython-${{ matrix.version }}"
-          tag: "micropython-${{ matrix.version }}-${{ matrix.tag }}"
+          name: "Release main for micropython-1.20.0"
+          tag: "micropython-1.20.0-main"
           commit: ${{ steps.get-commit-sha.outputs.TAG_SHA }}
           artifacts: "build/*.mpy"
           skipIfReleaseExists: true
