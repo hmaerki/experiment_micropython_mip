@@ -40,8 +40,8 @@ def _write_hashed_file(
     package_name: str,
     mpy_code: bytes,
     py_code: str,
-    target_path: str,
-    out_file_dir: pathlib.Path,
+    filename_py: str,
+    directory_package: pathlib.Path,
     hash_prefix_len: int,
 ):
     # Generate the full sha256 and the hash prefix to use as the output path.
@@ -49,7 +49,7 @@ def _write_hashed_file(
     short_file_hash = file_hash[:hash_prefix_len]
     # Group files into subdirectories using the first two bytes of the hash prefix.
     output_file = os.path.join(short_file_hash[:2], short_file_hash)
-    output_file_path = out_file_dir / output_file
+    output_file_path = directory_package / output_file
 
     # Hack: Just ignore hash conflicts
     output_file_path.unlink(missing_ok=True)
@@ -63,7 +63,7 @@ def _write_hashed_file(
                 package_name,
                 file=sys.stderr,
             )
-            print("  File:        ", target_path, file=sys.stderr)
+            print("  File:        ", filename_py, file=sys.stderr)
             print("  Short hash:  ", short_file_hash, file=sys.stderr)
             print("  Full hash:   ", file_hash, file=sys.stderr)
             with open(output_file_path, "rb") as f:
@@ -91,6 +91,8 @@ def main():
         "version": "0.1",
     }
 
+    shutil.rmtree(DIRECTORY_PACKAGE)
+
     for filename_py in (DIRECTORY_SRC / PACKAGE_NAME).glob("*.py"):
         with tempfile.NamedTemporaryFile(
             mode="rb", suffix=".mpy", delete=True
@@ -112,19 +114,18 @@ def main():
                     f"{proc.args}: returned {proc.returncode}:\n {proc.stdout} \n---\n {proc.stderr}"
                 )
 
-            target_path = f"{filename_py.stem}.mpy"
             short_mpy_hash = _write_hashed_file(
                 PACKAGE_NAME,
                 mpy_tempfile.read(),
                 filename_py.read_text(),
-                target_path=target_path,
-                out_file_dir=DIRECTORY_PACKAGE,
+                filename_py=filename_py,
+                directory_package=DIRECTORY_PACKAGE,
                 hash_prefix_len=HASH_PREFIX_LEN,
             )
 
             # Add the file to the package json.
-            target_path_mpy = target_path[:-2] + "mpy"
-            package_json["hashes"].append((target_path_mpy, short_mpy_hash))
+            filename_mpy = filename_py.with_suffix(".mpy")
+            package_json["hashes"].append((filename_mpy.name, short_mpy_hash))
 
         with (DIRECTORY_PACKAGE / f"{BRANCH}.json").open("w") as f:
             json.dump(package_json, f ,indent=4, sort_keys=True)
