@@ -53,4 +53,4 @@ jobs:
           tag: "v1.0"
           commit: ${{ steps.get-commit-sha.outputs.TAG_SHA }}
           artifacts: "build/*.mpy,build/package.json"
-          skipIfReleaseExists: true
+          skipIfReleaseExists: false
