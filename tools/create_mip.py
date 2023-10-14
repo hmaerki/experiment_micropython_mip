@@ -98,7 +98,7 @@ def main():
             proc = subprocess.run(
                 [
                     "python", "-m",
-                    "mpy-cross",
+                    "mpy_cross",
                     "-o",
                     mpy_tempfile.name,
                     str(filename_py),
