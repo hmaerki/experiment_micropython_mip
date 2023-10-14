@@ -94,7 +94,7 @@ mip.install("{PACKAGE_NAME}", version="main", index="https://hmaerki.github.io/e
         link = str({filename_json.relative_to(DIRECTORY_MIP)})
         self.html.write(f'<p><a href="{link}">{link}</a></p>\n')
         self.html.write(f"<pre>{filename_json.read_text()}</pre>\n")
-    
+
     def write(self)-> None:
         (DIRECTORY_MIP /"index.html").write_text(self.html.getvalue())
 
