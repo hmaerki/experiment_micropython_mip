@@ -8,6 +8,10 @@ on:
       mpy_cross_versions:  # A json list of mpy-cross versions to generate releases for
         required: true
 
+  pull_request:
+    branches:
+      - main
+
 jobs:
   publish:
     name: Publish
