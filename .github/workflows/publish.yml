@@ -37,7 +37,8 @@ jobs:
       - name: Get commit SHA
         id: get-commit-sha
         run: |
-          tag_sha=$(git rev-list -n 1 ${ inputs.branch })
+          echo "BRANCH=${{ github.event.inputs.branch }}"
+          tag_sha=$(git rev-list -n 1 ${{ github.event.inputs.branch }})
           echo "TAG_SHA=$tag_sha" >> "$GITHUB_OUTPUT"
 
       - name: Release
