@@ -1,7 +1,7 @@
 {
     "urls": [
-      ["dryer2023/__init__.py", "./__init__.py"],
-      ["dryer2023/statemachine.py", "./statemachine.py"]
+      ["dryer2023/__init__.py", "./__init__.mpy"],
+      ["dryer2023/statemachine.py", "./statemachine.mpy"]
     ],
     "deps": [
       ["umqtt.simple", "latest"]
