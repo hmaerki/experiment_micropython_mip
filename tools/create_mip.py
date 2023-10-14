@@ -91,7 +91,7 @@ mip.install("{PACKAGE_NAME}", version="main", index="https://hmaerki.github.io/e
 """)
 
     def package(self, filename_json: pathlib.Path) -> None:
-        link = str({filename_json.relative_to(DIRECTORY_MIP)})
+        link = filename_json.relative_to(DIRECTORY_MIP)
         self.html.write(f'<p><a href="{link}">{link}</a></p>\n')
         self.html.write(f"<pre>{filename_json.read_text()}</pre>\n")
 
