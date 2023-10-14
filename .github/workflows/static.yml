@@ -36,11 +36,6 @@ jobs:
 
       - name: Build
         run: |
-          pwd
-          ls -l .
-          ls -l ..
-          echo "<h1>Hallo<h1>" >> index.html
-          echo "<h1>Velo<h1>" >> docs/index.html
           # python -m pip install --upgrade pip
           pip install mpy-cross==1.12.0
           python -m tools.create_mip
