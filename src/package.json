@@ -1,0 +1,10 @@
+{
+    "urls": [
+      ["dryer2023/__init__.py", "github:hmaerki/experiment_micropython_mip/dryer2023/__init__.py"],
+      ["dryer2023/statemachine.py", "github:hmaerki/experiment_micropython_mip/dryer2023/statemachine.py"]
+    ],
+    "deps": [
+      ["umqtt.simple", "latest"]
+    ],
+    "version": "0.2"
+  }

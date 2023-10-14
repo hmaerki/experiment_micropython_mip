@@ -36,7 +36,8 @@ jobs:
       - name: Build
         run: |
           mkdir build
-          for f in $(find src/ -type f -name "*.py"); do mpy-cross -o build/$(basename $f .py).mpy $f; done
+          cp src/package.json build
+          for f in $(find src -type f -name "*.py"); do mpy-cross -o build/$(basename $f .py).mpy $f; done
           ls -l build
 
       - name: Get commit SHA
@@ -51,5 +52,5 @@ jobs:
           name: "Release main for micropython-1.20.0"
           tag: "v1.0"
           commit: ${{ steps.get-commit-sha.outputs.TAG_SHA }}
-          artifacts: "build/*.mpy"
+          artifacts: "build/*.mpy,build/package.json"
           skipIfReleaseExists: true
