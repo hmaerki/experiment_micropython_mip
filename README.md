@@ -59,5 +59,5 @@ Commiting to main will
 * Start github action `.github/workflows/static.yml`
   * Call `tools/create_mip.py`
     * Call `mpy_cross` for all python files: .py -> .mpy
-    * Create the MIP-directory structure under `docs/`
+    * Create the MIP-directory structure under `mip/`
     * Push to the static web page `https://hmaerki.github.io/experiment_micropython_mip`
